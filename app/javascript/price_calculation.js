@@ -2,7 +2,6 @@ window.addEventListener('load', () => {
   const priceInput = document.getElementById("item-price");
   priceInput.addEventListener("input", () => {
     const inputValue = priceInput.value;
-    console.log(inputValue);
 
     // 販売手数料10%を表示する
     const tax = Math.floor(inputValue * 0.1)
