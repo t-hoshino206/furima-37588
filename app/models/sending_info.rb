@@ -1,0 +1,2 @@
+class SendingInfo < ApplicationRecord
+end
