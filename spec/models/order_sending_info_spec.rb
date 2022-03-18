@@ -70,6 +70,16 @@ RSpec.describe OrderSendingInfo, type: :model do
         @order_sending.valid?
         expect(@order_sending.errors.full_messages).to include("Phone number is invalid")
       end
+      it 'phone_numberが9桁以下だと購入できない' do
+        @order_sending.phone_number = "090"
+        @order_sending.valid?
+        expect(@order_sending.errors.full_messages).to include("Phone number is invalid")
+      end
+      it 'phone_numberが12桁以上だと購入できない' do
+        @order_sending.phone_number = "090123456789"
+        @order_sending.valid?
+        expect(@order_sending.errors.full_messages).to include("Phone number is invalid")
+      end
       it 'userが紐付いていないと購入できない' do
         @order_sending.user_id = nil
         @order_sending.valid?

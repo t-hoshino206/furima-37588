@@ -1,14 +1,11 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!, only: [:index, :create]
+  before_action :set_item, only: [:index, :create]
 
   def index
-    # ルーティングのparamsから商品のidを取得している
-    @item = Item.find(params[:item_id])
-
-    if @item.order
+    # 商品が売れている、もしくは出品者の場合はトップページに遷移
+    if @item.order.present? || @item.user == current_user
       redirect_to root_path
-    elsif @item.user == current_user
-      redirect_to item_path(@item.id)
     else
       # form_withに渡す、フォームオブジェクトの空のインスタンスを生成
       @order_sending = OrderSendingInfo.new
@@ -16,7 +13,6 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @item = Item.find(params[:item_id])
     @order_sending = OrderSendingInfo.new(order_sending_params)
     # フォームオブジェクトクラスはActiveRecordを継承していないのでvalid?を実行してバリデーションを実行する必要がある。
     if @order_sending.valid?
@@ -30,6 +26,11 @@ class OrdersController < ApplicationController
   end
 
   private
+
+  def set_item
+    # ルーティングのparamsから商品のidを取得している
+    @item = Item.find(params[:item_id])
+  end
   
   def set_payitem
     Payjp.api_key = ENV["PAYJP_SECRET_KEY"]  # PAY.JPテスト秘密鍵
