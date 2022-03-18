@@ -18,7 +18,7 @@ class OrderSendingInfo
 
   # それぞれのモデルに対してcreateメソッドでインスタンスの作成・保存をする処理を書く。
   def save
-    order = Order.create(item_id: params[:item_id].to_i, user_id: current_user.id)
+    order = Order.create(item_id: item_id, user_id: user_id)
     # 先に変数orderを作成しておくのがキモ
     SendingInfo.create(postal_code: postal_code, prefecture_id: prefecture_id, city: city, address: address, building: building, phone_number: phone_number, order_id: order.id)
   end
