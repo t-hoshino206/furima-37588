@@ -5,7 +5,9 @@ class OrdersController < ApplicationController
     # ルーティングのparamsから商品のidを取得している
     @item = Item.find(params[:item_id])
 
-    if @item.user == current_user
+    if @item.order
+      redirect_to root_path
+    elsif @item.user == current_user
       redirect_to item_path(@item.id)
     else
       # form_withに渡す、フォームオブジェクトの空のインスタンスを生成
