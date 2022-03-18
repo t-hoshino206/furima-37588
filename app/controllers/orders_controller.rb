@@ -16,6 +16,7 @@ class OrdersController < ApplicationController
   end
 
   def create
+    @item = Item.find(params[:item_id])
     @order_sending = OrderSendingInfo.new(order_sending_params)
     # フォームオブジェクトクラスはActiveRecordを継承していないのでvalid?を実行してバリデーションを実行する必要がある。
     if @order_sending.valid?
@@ -24,7 +25,6 @@ class OrdersController < ApplicationController
       @order_sending.save
       redirect_to root_path
     else
-      @item = Item.find(params[:item_id])
       render :index
     end
   end
